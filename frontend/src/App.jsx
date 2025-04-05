@@ -137,6 +137,12 @@ const DateText = styled(Typography)({
   textTransform: 'uppercase',
 });
 
+const MessageDivider = styled('div')({
+  height: '1px',
+  backgroundColor: 'rgba(29, 28, 29, 0.08)',
+  margin: '16px 0',
+});
+
 // Move highlightText function here, before any components
 const highlightText = (text, query) => {
   if (!query || !text) return text;
@@ -470,56 +476,85 @@ const MessageItem = ({ message, searchQuery, showAvatar = true }) => {
 };
 
 const MessageGroup = ({ messages, searchQuery }) => {
-  const formatDate = (ts) => {
-    if (!ts) return '';
-    const date = new Date(parseFloat(ts) * 1000);
-    return date.toLocaleDateString('en-US', {
+  // Group messages by date
+  const messagesByDate = messages.reduce((groups, message) => {
+    const date = new Date(message.ts * 1000);
+    const dateKey = date.toLocaleDateString('en-US', {
+      weekday: 'long',
       month: 'long',
       day: 'numeric',
       year: 'numeric'
     });
-  };
 
-  // Group messages by date and user
-  const groupedMessages = messages.reduce((acc, message) => {
-    const date = formatDate(message.ts);
-    if (!acc[date]) {
-      acc[date] = [];
+    if (!groups[dateKey]) {
+      groups[dateKey] = [];
     }
-    const lastGroup = acc[date][acc[date].length - 1];
-
-    // Check if this message should be grouped with the previous one
-    if (lastGroup &&
-        lastGroup.user === message.user &&
-        (parseFloat(message.ts) - parseFloat(lastGroup.messages[lastGroup.messages.length - 1].ts)) < 300) { // 5 minutes
-      lastGroup.messages.push(message);
-    } else {
-      acc[date].push({
-        user: message.user,
-        messages: [message]
-      });
-    }
-    return acc;
+    groups[dateKey].push(message);
+    return groups;
   }, {});
 
   return (
     <>
-      {Object.entries(groupedMessages).map(([date, groups], dateIndex) => (
+      {Object.entries(messagesByDate).map(([date, dateMessages], index) => (
         <React.Fragment key={date}>
           <DateDivider>
             <DateText>{date}</DateText>
           </DateDivider>
-          {groups.map((group, groupIndex) => (
-            <Box key={`${date}-${groupIndex}`}>
-              {group.messages.map((message, messageIndex) => (
-                <MessageItem
-                  key={message.ts}
-                  message={message}
-                  searchQuery={searchQuery}
-                  showAvatar={messageIndex === 0}
-                />
-              ))}
-            </Box>
+          {dateMessages.map((message, messageIndex) => (
+            <React.Fragment key={`${message.ts}-${messageIndex}`}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  padding: '8px 20px',
+                  '&:hover': {
+                    backgroundColor: 'rgba(29, 28, 29, 0.04)',
+                  }
+                }}
+              >
+                <UserAvatar>
+                  {message.user ? message.user.charAt(0).toUpperCase() : '?'}
+                </UserAvatar>
+                <MessageContent>
+                  <MessageHeader>
+                    <Typography
+                      component="span"
+                      sx={{
+                        fontWeight: 900,
+                        fontSize: '15px',
+                        color: 'rgb(29, 28, 29)',
+                        marginRight: '8px',
+                      }}
+                    >
+                      {message.user}
+                    </Typography>
+                    <Typography
+                      component="span"
+                      sx={{
+                        color: 'rgb(97, 96, 97)',
+                        fontSize: '12px',
+                      }}
+                    >
+                      {new Date(message.ts * 1000).toLocaleTimeString('en-US', {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: true
+                      })}
+                    </Typography>
+                  </MessageHeader>
+                  <MessageText>
+                    {parseMessageText(message.text, searchQuery)}
+                  </MessageText>
+                  {message.attachments && message.attachments.length > 0 && (
+                    <Box sx={{ mt: 1 }}>
+                      {message.attachments.map((attachment, i) => (
+                        <MessageAttachment key={i} attachment={attachment} />
+                      ))}
+                    </Box>
+                  )}
+                </MessageContent>
+              </Box>
+              {messageIndex < dateMessages.length - 1 && <MessageDivider />}
+            </React.Fragment>
           ))}
         </React.Fragment>
       ))}
