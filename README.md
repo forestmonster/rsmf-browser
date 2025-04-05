@@ -1,14 +1,14 @@
-# Slack RMSF Browser
+# Slack RSMF Browser
 
-A Dockerized Flask application that allows browsing and searching through Slack RMSF export files. The application provides a Slack-like interface with channel navigation and advanced search capabilities.
+A Dockerized Flask application that allows browsing and searching through Slack RSMF (Relativity Short Message Format) export files. The application provides a Slack-like interface with channel navigation and advanced search capabilities.
 
 ## Features
 
-- Upload and parse Slack RMSF export ZIP files
-- Channel-based navigation
-- Advanced search with regex support
-- Slack-like interface
-- Dockerized for easy deployment
+- Upload and parse Slack RSMF export ZIP files
+- Browse messages by time period
+- Search through messages and attachments
+- View and download attachments
+- Modern, responsive UI that mimics Slack's interface
 
 ## Prerequisites
 
@@ -24,7 +24,7 @@ A Dockerized Flask application that allows browsing and searching through Slack 
    ```bash
    docker-compose up --build
    ```
-3. Access the application at `http://localhost:5000`
+3. Access the application at `http://localhost:80` to ensure you're using the Nginx proxy.
 
 ### Local Development
 
@@ -51,12 +51,10 @@ A Dockerized Flask application that allows browsing and searching through Slack 
 
 ## Usage
 
-1. Upload a Slack RMSF export ZIP file using the file upload button
-2. Browse channels using the sidebar
-3. Use the search box to search through messages
-   - Supports regular expressions
-   - Filter by channel by selecting a channel from the sidebar
-4. View search results in the main content area
+1. Upload a Slack RSMF export ZIP file using the file upload button
+2. Select a time period from the sidebar to view messages
+3. Use the search bar to filter messages
+4. Click on attachments to view or download them
 
 ## Development
 
