@@ -33,6 +33,13 @@ yarn-error.log*
 .yarn
 .pnp.*
 
+# Build output
+static/assets/
+*.js.map
+*.css.map
+frontend/dist/
+frontend/build/
+
 # IDEs and editors
 .idea/
 .vscode/
