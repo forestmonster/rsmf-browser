@@ -32,6 +32,10 @@ yarn-error.log*
 .npm
 .yarn
 .pnp.*
+package-lock.json
+frontend/package-lock.json
+yarn.lock
+frontend/yarn.lock
 
 # Build output
 static/assets/
