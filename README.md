@@ -1,6 +1,6 @@
 # Slack RSMF Browser
 
-A Dockerized Flask application that allows browsing and searching through Slack RSMF (Relativity Short Message Format) export files. The application provides a Slack-like interface with channel navigation and advanced search capabilities.
+This is a low-quality Dockerized Flask application that allows browsing and searching through Slack RSMF ([Relativity Short Message Format](https://help.relativity.com/RelativityOne/Content/System_Guides/Relativity_Short_Message_Format/Relativity_short_message_format.htm)) export files. It provides a Slack-like interface with channel navigation and simple search capabilities.
 
 ## Features
 
@@ -8,7 +8,7 @@ A Dockerized Flask application that allows browsing and searching through Slack 
 - Browse messages by time period
 - Search through messages and attachments
 - View and download attachments
-- Modern, responsive UI that mimics Slack's interface
+- Responsive UI that sort of looks like Slack's interface
 
 ## Prerequisites
 
@@ -52,7 +52,7 @@ A Dockerized Flask application that allows browsing and searching through Slack 
 ## Usage
 
 1. Upload a Slack RSMF export ZIP file using the file upload button
-2. Select a time period from the sidebar to view messages
+2. Select a time period from the sidebar on the left to view messages
 3. Use the search bar to filter messages
 4. Click on attachments to view or download them
 
